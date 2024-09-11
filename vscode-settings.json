@@ -1,0 +1,9 @@
+{
+    "workbench.colorTheme": "Pop-theme",
+    "files.autoSave": "onFocusChange",
+    "editor.formatOnSave": true,
+    "explorer.compactFolders": false,
+    "explorer.confirmDragAndDrop": false,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true
+}
