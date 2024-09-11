@@ -13,3 +13,9 @@ console.log(response3)
 alert("You answered " + response3)
 
 alert("Thank you for your participation!")
+
+Date.now(start)
+Date.now(end)
+console.log(end - start / 1000)
+
+alert("You answered in " time)
