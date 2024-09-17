@@ -31,3 +31,29 @@ form.addEventListener('submit', function (event) {
     // Hide the form
     form.style.display = "none";
 });
+
+//let response = prompt('What is 4 + 6?');
+
+let num3Output = document.getElementById("num3");
+let num4Output = document.getElementById("num4");
+
+let num3 = Math.floor(Math.random() * 10) + 1;
+let num4 = Math.floor(Math.random() * 10) + 1;
+
+num3Output.innerHTML = num3;
+num4Output.innerHTML = num4;
+
+
+let feedback = '';
+
+if (response1 == 10) {
+    feedback = 'Correct!';
+} else if (response1 == 9 || response1 == 11) {
+    feedback = 'You were close!';
+} else {
+    feedback = 'Incorrect.';
+}
+
+
+alert(feedback + ' The expected answer is 10.');
+
