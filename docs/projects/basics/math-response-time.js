@@ -38,4 +38,3 @@ alert("You answered " + response4 + " in " + responseTime4 + " seconds.")
 
 alert("Thank you for your participation!")
 
-
