@@ -13,4 +13,4 @@ if (response == (num1 + num2)) {
     feedback = 'Incorrect.';
 }
 
-alert(feedback + ' The expected answer is ' + (num1 + num2));
+alert(feedback + ' The expected answer is ' + (num1 + num2) + '.');
