@@ -29,7 +29,7 @@ if (age >= 18) {
 let number = prompt('Please enter a whole number below:');
 
 if (number % 2 === 0) {
-    alert('The number entered is even')
+    alert('The number entered is even.')
 } else {
-    alert('The number entered is odd')
+    alert('The number entered is odd.')
 }
