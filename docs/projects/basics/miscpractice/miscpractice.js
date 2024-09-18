@@ -14,3 +14,14 @@ if (response == (num1 + num2)) {
 }
 
 alert(feedback + ' The expected answer is ' + (num1 + num2) + '.');
+
+let age = prompt('How old are you?');
+if (age < 12) {
+    alert('Child');
+}
+if (age >= 12 && age <= 17) {
+    alert('Teenager');
+}
+if (age >= 18) {
+    alert('Adult');
+}
