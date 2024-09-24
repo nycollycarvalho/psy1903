@@ -1,7 +1,6 @@
 function celsiusToFahrenheit(C, F) {
-
-    let fahrenheit = (F = (C * 1.8) + 32)
-    return fahrenheit
+    let temp = (F = (C * 1.8) + 32);
+    return temp;
 }
 
 console.log(celsiusToFahrenheit(10));
