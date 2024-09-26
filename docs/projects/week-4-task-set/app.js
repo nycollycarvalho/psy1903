@@ -22,7 +22,7 @@ console.log(convertTemp(10, 'f'));
 */
 
 
-function getWordLength(words) {
+/*function getWordLength(words) {
     let length = [];
     words.forEach(word => {
         length.push(word.length);
@@ -31,4 +31,18 @@ function getWordLength(words) {
 }
 
 let words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
-console.log(getWordLength(words));
+console.log(getWordLength(words));*/
+
+
+let words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
+console.log(getLongestWord(words));
+
+function getLongestWord(words) {
+    let longestWord = "";
+
+    for (let i = 0; i < words.length; i++) {
+        if (words[i].length > longestWord.length)
+            longestWord = words[i];
+    }
+    return longestWord
+}
