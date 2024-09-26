@@ -7,7 +7,7 @@ console.log(celsiusToFahrenheit(10));
 console.log(celsiusToFahrenheit(-5));
 */
 
-function convertTemp(temp, converTo) {
+/*function convertTemp(temp, converTo) {
 
     if (converTo == "c") {
         return ((temp - 32) / 1.8)
@@ -19,3 +19,16 @@ function convertTemp(temp, converTo) {
 
 console.log(convertTemp(10, 'c'));
 console.log(convertTemp(10, 'f')); 
+*/
+
+
+function getWordLength(words) {
+    let length = [];
+    words.forEach(word => {
+        length.push(word.length);
+    });
+    return length;
+}
+
+let words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
+console.log(getWordLength(words));
