@@ -63,7 +63,7 @@ function getOddNumbers(numbers) {
 
 }*/
 
-alert('Welcome to the even/odd response time task.\n\nYou are about to see a series of numbers.\n\nIf the number you see is EVEN, type the letter "e".\nIf the number you see is ODD, type the letter "o"\n\nPlease answer as quickly and as accuratly as possible.')
+/*alert('Welcome to the even/odd response time task.\n\nYou are about to see a series of numbers.\n\nIf the number you see is EVEN, type the letter "e".\nIf the number you see is ODD, type the letter "o"\n\nPlease answer as quickly and as accuratly as possible.')
 
 let results = [];
 
@@ -95,3 +95,27 @@ for (let i = 0; i < 5; i++) {
 alert("Thank you for your time!");
 
 console.log(results);
+*/
+
+console.log(filterNumbers([1, 2, 3, 4, 5], 'even'));
+console.log(filterNumbers([1, 2, 3, 4, 5], 'odd'));
+
+function filterNumbers(numbers, evenOrOdd) {
+
+    let filterNumbers = [];
+
+    numbers.forEach(numbers => {
+        if (evenOrOdd === 'even' && numbers % 2 === 0) {
+            filterNumbers.push(numbers);
+        } else if (evenOrOdd === 'odd' && numbers % 2 !== 0) {
+            filterNumbers.push(numbers);
+        }
+
+    })
+
+    return filterNumbers
+
+}
+
+
+
