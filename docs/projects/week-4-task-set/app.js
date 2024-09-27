@@ -48,7 +48,7 @@ function getLongestWord(words) {
 }*/
 
 
-console.log(getOddNumbers([1, 2, 3, 4, 5]));
+/*console.log(getOddNumbers([1, 2, 3, 4, 5]));
 console.log(getOddNumbers([12, 45, 10, 11, 61]));
 
 function getOddNumbers(numbers) {
@@ -61,6 +61,37 @@ function getOddNumbers(numbers) {
 
     return results
 
+}*/
+
+alert('Welcome to the even/odd response time task.\n\nYou are about to see a series of numbers.\n\nIf the number you see is EVEN, type the letter "e".\nIf the number you see is ODD, type the letter "o"\n\nPlease answer as quickly and as accuratly as possible.')
+
+let results = [];
+
+function getRandomNumber() {
+    return Math.floor(Math.random() * 20) + 1;
+}
+
+for (let i = 0; i < 5; i++) {
+    let number = getRandomNumber();
+    let startTime = Date.now();
+
+    let response = prompt(`Trial ${i + 1}:\n\nNumber: ${number}\n\nType the letter 'e' for EVEN.\n\nType the letter 'o' for ODD.`);
+
+    let endTime = Date.now();
+    let responseTime = (endTime - startTime) / 1000;
+
+    let isEven = number % 2 === 0;
+    let correct = (isEven && response === 'e') || (!isEven && response === 'o');
+
+    results.push({
+        number: number,
+        response: response,
+        correct: correct,
+        responseTime: responseTime
+    });
 }
 
 
+alert("Thank you for your time!");
+
+console.log(results);
