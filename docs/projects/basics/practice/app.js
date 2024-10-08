@@ -49,3 +49,20 @@ form.addEventListener('submit', function (event) {
     // Report the results
     results.innerHTML = resultsMessage;
 });
+
+
+var likert_scale = [
+    "Strongly Disagree",
+    "Disagree",
+    "Neutral",
+    "Agree",
+    "Strongly Agree"
+];
+
+var trial = {
+    type: jsPsychSurveyLikert,
+    questions: [
+        { prompt: "I enjoy solving math problems.", labels: likert_scale },
+        { prompt: "I find math easy.", labels: likert_scale },
+
+};
