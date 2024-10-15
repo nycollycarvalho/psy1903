@@ -79,7 +79,7 @@ let resultsTrial = {
         `,
     on_start: function () {
         //  ⭐ Update the following three values as appropriate ⭐
-        let prefix = 'lexical-decision';
+        let prefix = 'mrt';
         let dataPipeExperimentId = 'your-experiment-id-here';
         let forceOSFSave = false;
 
