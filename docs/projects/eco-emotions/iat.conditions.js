@@ -1,20 +1,19 @@
-// Modify the following `blocksA`, `blocksB`, and `words` arrays with appropriate values for your experiment
 let blocksA = [
-    ['men', 'women'],
-    ['family', 'career']
+    ['nature', 'school'],
+    ['anxiety', 'serenity']
 ];
 
 let blocksB = [
-    ['family or men', 'career or women'],
-    ['family or women', 'career or men']
+    ['nature or anxiety', 'school or serenity'],
+    ['nature or serenity', 'school or serenity']
 ];
 
 // There should be 10 words per category
 let words = {
-    men: ['Calvin', 'Ben', 'Jamal', 'Charles', 'Mateo', 'Henry', 'Lucas', 'Andrew', 'Darnell', 'George'],
-    women: ['Mariah', 'Emily', 'Julia', 'Brenda', 'Tasha', 'Priya', 'Kelsey', 'Jasmine', 'Grace', 'Camila'],
-    family: ['home', 'wedding', 'children', 'relative', 'parent', 'cousin', 'sibling', 'spouse', 'house', 'baby'],
-    career: ['corporation', 'salary', 'interview', 'promotion', 'resume', 'office', 'income', 'hiring', 'bosses', 'corporate'],
+    nature: ['ecosystem', 'carbon', 'biodiversity', 'polar', 'rainforest', 'desert', 'ocean', 'flora', 'atmosphere', 'mountains'],
+    school: ['curriculum', 'homework', 'semester', 'syllabus', 'textbook', 'assignment', 'exam', 'graduation', 'library', 'professor'],
+    anxiety: ['panic', 'worry', 'tension', 'fear', 'stress', 'dread', 'agitation', 'sweating', 'discomfort', 'avoidance'],
+    serenity: ['tranquility', 'peace', 'relaxation', 'quietude', 'balance', 'ease', 'composure', 'soothing', 'contentment', 'calm'],
 };
 
 
