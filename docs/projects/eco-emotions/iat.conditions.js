@@ -1,3 +1,6 @@
+let conditionsVideos = [
+]
+
 let blocksA = [
     ['nature', 'school'],
     ['anxiety', 'serenity']
@@ -5,7 +8,7 @@ let blocksA = [
 
 let blocksB = [
     ['nature or anxiety', 'school or serenity'],
-    ['nature or serenity', 'school or serenity']
+    ['nature or serenity', 'school or anxiety']
 ];
 
 // There should be 10 words per category
