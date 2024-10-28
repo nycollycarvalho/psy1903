@@ -6,10 +6,14 @@ let welcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
     <h1 class='name'>Welcome to the experiment!</h1> 
-    <p>In Task 1, you will watch a short video.</p>
-    <p>In Task 2, categorize a series of words.</p>
-    <p>In Task 3, you will answers a brief set of questions.</p>
-    <p>Please answer as quickly as possible.</p>
+    <p>In this experiment, you will have to complete the three folllowing tasks:<p>
+    <ul class='list'>
+    <li>In Task 1, you will watch a short video.</li>
+    <li>In Task 2, categorize a series of words.</li>
+    <li>In Task 3, you will answers a brief set of questions.</li>
+    </ul>
+
+    <p>If you are doing this experiment in a mobile device, please, change to a computer.</p>
     <p>Press <span class='key'> SPACE </span> to begin.</p>
     `,
     choices: [' '],
@@ -22,23 +26,93 @@ let videos = [
     { name: 'neutral', embed: `<iframe width="560" height="315" src="https://www.youtube.com/embed/pLVpJAVS27A?si=epz0_j1lHlWfLihe&amp;start=30" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
 ];
 
-let videoCondition = jsPsych.randomization.sampleWithoutReplacement(videos, 1)[0].embed;
+let video = jsPsych.randomization.sampleWithoutReplacement(videos, 1)[0].embed;
+let primeCondition = video.embed;
+let whichPrime = video.name;
 
 let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-    <h1>Task 1 of 3</h1>
-    <p>In this task, you will watch the following video. Please press the video to begin. You will automatically proceed to Task 2 once the video ends.</p>
-    ${videoCondition}
+    <h1 class='taskHeading'>Task 1 of 3</h1>
+    <p class='instruction'>In this task, you will watch the following video. Please press the video to begin.<br>
+        Please do not skip or change the speed; you will not be able to move on if you do so.<br>
+        You will automatically proceed to Task 2 once the video ends.</p>
+    ${primeConditionCondition}
     `,
     trial_duration: 78000,
     choices: ['NO KEYS'],
     data: {
         collect: true,
+        trialType: 'prime'
+        whichPrime: whichPrime
     }
 };
 
 timeline.push(primingTrial);
+
+let IATInstructions = {
+    type: 'html-keyboard-response',
+    stimulus: `
+    <h1 class='taskHeading'>Task 2 of 3</h1>
+    <p>In this task you will, you will be shown a series of words and asked to sort them into categories.</p>
+    <p>Press <span class='key'> SPACE </span> to begin.</p>
+    `,
+    post_trial_gap: 250
+};
+
+timeline.push(IATInstructions);
+
+let blockInstructions = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+    <h2>Part ${conditions.indexOf(block) + 1} of 4</h2>
+    <p>In this part, the two categories will be: <b>${block.categories[0]}</b> and <b>${block.categories[1]}</b>.</p>
+    <p>If the word should be categorized into the <b>${block.categories[0]}</b> category, then press <span class='key'>F</span>.</p>
+    <p>If the word should be categorized into the <b>${block.categories[1]}</b> category, then press <span class='key'>J</span>.</p>
+    <p>Press <span class='key'>SPACE</span> to start.</p>
+`,
+    choices: [' '],
+};
+timeline.push(blockInstructions);
+
+
+let blockConditions = jsPsych.randomization.repeat(block.trial, 1);
+for (let condition of blockConditions) {
+    let conditionTrial = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+        <p class='category1'><b>${block.categories[0]}</b> (press 'F')</p>
+        <p class='category2'><b>${block.categories[1]}</b> (press 'J')</p>
+        <p class='stimulusWord'>${condition.word}</p>
+        `,
+        choices: ['f', 'j'],
+        data: {
+            trialType: 'iat',
+            word: condition.word,
+            expectedCategory: condition.expectedCategory,
+            expectedCategoryAsDisplayed: condition.expectedCategoryAsDisplayed,
+            leftCategory: block.categories[0],
+            rightCategory: block.categories[1],
+            collect: true,
+        },
+        on_finish: function (data) {
+            if (data.response === data.expectedResponse) {
+                data.correct = true;
+            } else {
+                data.correct = false;
+            }
+        }
+    }
+    timeline.push(conditionTrial);
+
+    let fixationTrial = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<p class='fixation'>+</p>`,
+        choices: ['NO KEYS'],
+        trial_duration: 250
+    };
+    timeline.push(fixationTrial);
+}
 
 let likert_scale = [
     "Never",
@@ -71,82 +145,6 @@ let likertSurvey = {
 };
 timeline.push(likertSurvey);
 
-let IATInstructions = {
-    type: 'html-keyboard-response',
-    stimulus: `
-    <p>In this task you will, you will be shown a series of words and asked to sort them into categories.</p>
-    <p>Press <span class='key'> SPACE </span> to begin.</p>
-    `,
-    post_trial_gap: 250
-};
-
-timeline.push(IATInstructions);
-
-let part1Instructions = {
-    type: 'html-keyboard-response',
-    stimulus: `
-    <h1>Part 1</h1>
-    <p>In this, the two categories will be <b>school</b> or <b>nature</b>.</p>
-    <p>If the word in the middle of the screen should be sorted into the <b>school</b> category, press <span class='key'> F </span></p>
-    <p>If the word should be sorted into the <b>nature</b> category, press <span class='key'> J </span></p>
-    <p>Press <span class='key'> SPACE </span> to begin.</p>
-    `
-};
-
-timeline.push(part1Instructions);
-
-let part2Instructions = {
-    type: 'html-keyboard-response',
-    stimulus: `
-    <h1>Part 2</h1>
-    <p>In this, the two categories will be <b>anxiety</b> or <b>serenity</b>.</p>
-    <p>If the word in the middle of the screen should be sorted into the <b>serenity</b> category, press <span class='key'> F </span></p>
-    <p>If the word should be sorted into the <b>serenity</b> category, press <span class='key'> J </span></p>
-    <p>Press <span class='key'> SPACE </span> to begin.</p>
-    `
-};
-
-timeline.push(part2Instructions);
-
-let part3Instructions = {
-    type: 'html-keyboard-response',
-    stimulus: `
-    <h1>Part 3</h1>
-    <p>In this, the two categories will be <b>nature or anxiety</b> or <b>school or serenity</b>.</p>
-    <p>If the word in the middle of the screen should be sorted into the <b>nature or anxiety</b> category, press <span class='key'> F </span></p>
-    <p>If the word should be sorted into the <b>school or serenity</b> category, press <span class='key'> J </span></p>
-    <p>Press <span class='key'> SPACE </span> to begin.</p>
-    `
-};
-
-timeline.push(part3Instructions);
-
-let part4Instructions = {
-    type: 'html-keyboard-response',
-    stimulus: `
-    <h1>Part 3</h1>
-    <p>In this, the two categories will be <b>nature or serenity</b> or <b>school or anxiety</b>.</p>
-    <p>If the word in the middle of the screen should be sorted into the <b>nature or serenity</b> category, press <span class='key'> F </span></p>
-    <p>If the word should be sorted into the <b>school or anxiety</b> category, press <span class='key'> J </span></p>
-    <p>Press <span class='key'> SPACE </span> to begin.</p>
-    `
-};
-
-timeline.push(part4Instructions);
-
-//for (let condition of conditions) {
-//  let conditionTrial = {
-//     type: jsPsychHtmlKeyboardResponse,
-//     stimulus: `<h1>${condition.characters}</h1>`,
-//     data:
-//          characters: condition.characters,
-//       category: trial.expectedCategory,
-//  }
-//      ;
-
-// timeline.push(conditionTrial);
-//}
-//
 
 let resultsTrial = {
     type: jsPsychHtmlKeyboardResponse,
@@ -159,8 +157,8 @@ let resultsTrial = {
     on_start: function () {
 
         let prefix = 'eco-emotions';
-        let dataPipeExperimentId = 'eco-emotions';
-        let forceOSFSave = false;
+        let dataPipeExperimentId = 'qtpiSXvcWypL';
+        let forceOSFSave = true;
 
         // Filter and retrieve results as CSV data
         let results = jsPsych.data
@@ -213,6 +211,7 @@ let debriefTrial = {
             .csv();
 
         console.log(data);
+
     }
 };
 timeline.push(debriefTrial);

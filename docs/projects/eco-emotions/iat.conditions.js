@@ -1,5 +1,3 @@
-let conditionsVideos = [
-]
 
 let blocksA = [
     ['nature', 'school'],
@@ -20,11 +18,6 @@ let words = {
 };
 
 
-
-// Your final experiment should show 36 words per category; 
-// when developing your experiment you can reduce this number
-// to expedite the process of testing the experiment
-// Always set the count to an even number
 let count = 4;
 
 
@@ -94,10 +87,6 @@ function generateConditions() {
 }
 
 
-/**
-* The following are miscellaneous array functions utilized in the above code
-*/
-// Shuffle an array
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
