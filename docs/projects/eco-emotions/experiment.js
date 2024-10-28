@@ -46,7 +46,6 @@ let primingTrial = {
     data: {
         collect: true,
         trialType: 'prime',
-        whichPrime: whichPrime
     }
 };
 timeline.push(primingTrial);
