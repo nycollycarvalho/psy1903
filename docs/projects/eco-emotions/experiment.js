@@ -21,9 +21,9 @@ let welcomeTrial = {
 timeline.push(welcomeTrial);
 
 let videos = [
-    { name: 'climate-anxiety', embed: `<iframe width="560" height="315" src="https://www.youtube.com/embed/QHH3iSeDBLo?si=l2aaso7D6oZiZcHX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
-    { name: 'school-anxiety', embed: `<iframe width="560" height="315" src="https://www.youtube.com/embed/Okrqwbt-TlI?si=1RgCHdzm45NmiQLc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
-    { name: 'neutral', embed: `<iframe width="560" height="315" src="https://www.youtube.com/embed/pLVpJAVS27A?si=epz0_j1lHlWfLihe&amp;start=30" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
+    { name: 'climate-anxiety', embed: `<iframe width="650" height="400" src="https://www.youtube.com/embed/QHH3iSeDBLo?si=l2aaso7D6oZiZcHX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
+    { name: 'school-anxiety', embed: `<iframe width="650" height="400" src="https://www.youtube.com/embed/Okrqwbt-TlI?si=1RgCHdzm45NmiQLc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
+    { name: 'neutral', embed: `<iframe width="650" height="400" src="https://www.youtube.com/embed/pLVpJAVS27A?si=epz0_j1lHlWfLihe&amp;start=30" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
 ];
 
 let video = jsPsych.randomization.sampleWithoutReplacement(videos, 1)[0].embed;
@@ -34,20 +34,21 @@ let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
     <h1 class='taskHeading'>Task 1 of 3</h1>
-    <p class='instruction'>In this task, you will watch the following video. Please press the video to begin.<br>
+    <p class='instructions'>
+        In this task, you will watch the following video. Please press the video to begin.<br>
         Please do not skip or change the speed; you will not be able to move on if you do so.<br>
-        You will automatically proceed to Task 2 once the video ends.</p>
-    ${primeConditionCondition}
+        You will automatically proceed to Task 2 once the video ends.
+    </p>
+    ${primeCondition}
     `,
     trial_duration: 78000,
     choices: ['NO KEYS'],
     data: {
         collect: true,
-        trialType: 'prime'
+        trialType: 'prime',
         whichPrime: whichPrime
     }
 };
-
 timeline.push(primingTrial);
 
 let IATInstructions = {
