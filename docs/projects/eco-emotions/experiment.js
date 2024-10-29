@@ -1,23 +1,25 @@
 let jsPsych = initJsPsych();
 let timeline = [];
 
+
 // Welcome trial
 let welcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-   <h1 class='name'>Welcome to the experiment!</h1>
-   <p>In this experiment, you will have to complete the three following tasks:<p>
-   <ul class='list'>
-   <li>In Task 1, you will watch a short video.</li>
-   <li>In Task 2, categorize a series of words.</li>
-   <li>In Task 3, you will answer a brief set of questions.</li>
-   </ul>
-   <p>If you are doing this experiment on a mobile device, please switch to a computer.</p>
-   <p>Press <span class='key'> SPACE </span> to begin.</p>
-   `,
+  <h1 class='name'>Welcome to the experiment!</h1>
+  <p>In this experiment, you will have to complete the three following tasks:<p>
+  <ul class='list'>
+  <li>In Task 1, you will watch a short video.</li>
+  <li>In Task 2, categorize a series of words.</li>
+  <li>In Task 3, you will answer a brief set of questions.</li>
+  </ul>
+  <p>If you are doing this experiment on a mobile device, please switch to a computer.</p>
+  <p>Press <span class='key'> SPACE </span> to begin.</p>
+  `,
     choices: [' '],
 };
 timeline.push(welcomeTrial);
+
 
 // Videos
 let videos = [
@@ -26,23 +28,25 @@ let videos = [
     { name: 'neutral', embed: `<iframe width="650" height="400" src="https://www.youtube.com/embed/pLVpJAVS27A?si=epz0_j1lHlWfLihe&amp;start=30" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` }
 ];
 
+
 // Randomly select video
 let video = jsPsych.randomization.sampleWithoutReplacement(videos, 1)[0];
 let primeCondition = video.embed;
 let whichPrime = video.name;
 
+
 // Priming trial
 let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-   <h1 class='taskHeading'>Task 1 of 3</h1>
-   <p class='instructions'>
-       In this task, you will watch the following video. Please press the video to begin.<br>
-       Please do not skip or change the speed; you will not be able to move on if you do so.<br>
-       You will automatically proceed to Task 2 once the video ends.
-   </p>
-   ${primeCondition}
-   `,
+  <h1 class='taskHeading'>Task 1 of 3</h1>
+  <p class='instructions'>
+      In this task, you will watch the following video. Please press the video to begin.<br>
+      Please do not skip or change the speed; you will not be able to move on if you do so.<br>
+      You will automatically proceed to Task 2 once the video ends.
+  </p>
+  ${primeCondition}
+  `,
     trial_duration: 78000,
     choices: ['NO KEYS'],
     data: {
@@ -53,34 +57,40 @@ let primingTrial = {
 };
 timeline.push(primingTrial);
 
+
 // IAT Instructions
 let IATInstructions = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-   <h1 class='taskHeading'>Task 2 of 3</h1>
-   <p>In this task, you will be shown a series of words and asked to sort them into categories.</p>
-   <p>Press <span class='key'> SPACE </span> to begin.</p>
-   `,
+  <h1 class='taskHeading'>Task 2 of 3</h1>
+  <p>In this task, you will be shown a series of words and asked to sort them into categories.</p>
+  <p>Press <span class='key'> SPACE </span> to begin.</p>
+  `,
     post_trial_gap: 250
 };
 timeline.push(IATInstructions);
+
 
 // Loop through conditions
 for (let block of conditions) {
     console.log("Current block:", block);  // Check if block is defined
 
+
     // Use block.trials instead of block.trial
     let blockConditions = jsPsych.randomization.repeat(block.trials, 1);
     console.log("Block conditions:", blockConditions);  // Check blockConditions
 
+
     for (let condition of blockConditions) {
+
 
         let conditionTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-            <p class='category1'><b>${block.categories[0]}</b> (press 'F')</p>
-            <p class='category2'><b>${block.categories[1]}</b> (press 'J')</p>
-            `,
+           <p class='category1'><b>${block.categories[0]}</b> (press 'F')</p>
+           <p class='category2'><b>${block.categories[1]}</b> (press 'J')</p>
+           <p class='stimulusWord'>${condition.word}</p>
+           `,
             choices: ['f', 'j'],
             data: {
                 trialType: 'iat',
@@ -101,6 +111,7 @@ for (let block of conditions) {
         };
         timeline.push(conditionTrial);
 
+
         let fixationTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `<p class='fixation'>+</p>`,
@@ -111,6 +122,7 @@ for (let block of conditions) {
     }
 }
 
+
 // Likert scale
 let likert_scale = [
     "Never",
@@ -120,12 +132,13 @@ let likert_scale = [
     "Almost always"
 ];
 
+
 let likertSurvey = {
     type: jsPsychSurveyLikert,
     preamble: `
-   <h1 class='task3name'>Task 3</h1>
-   <p>Please answer the following 10 questions.</p>
-   `,
+  <h1 class='task3name'>Task 3</h1>
+  <p>Please answer the following 10 questions.</p>
+  `,
     button_label: 'Submit',
     questions: [
         { prompt: "Thinking about climate change makes it difficult for me to concentrate.", labels: likert_scale },
@@ -142,19 +155,21 @@ let likertSurvey = {
 };
 timeline.push(likertSurvey);
 
+
 // Results trial
 let resultsTrial = {
     type: jsPsychHtmlKeyboardResponse,
     choices: ['NO KEYS'],
     async: false,
     stimulus: `
-       <h1>Please wait...</h1>
-       <p>We are saving the results of your inputs.</p>
-       `,
+      <h1>Please wait...</h1>
+      <p>We are saving the results of your inputs.</p>
+      `,
     on_start: function () {
         let prefix = 'eco-emotions';
         let dataPipeExperimentId = 'qtpiSXvcWypL';
         let forceOSFSave = false;
+
 
         // Filter and retrieve results as CSV data
         let results = jsPsych.data
@@ -163,33 +178,21 @@ let resultsTrial = {
             .ignore(['stimulus', 'trial_type', 'plugin_version', 'collect'])
             .csv();
 
+        console.log(results)
+
         let participantId = new Date().toISOString().replace(/T/, '-').replace(/\..+/, '').replace(/:/g, '-');
 
-        let isLocalHost = window.location.href.includes('localhost');
+        let fileName = prefix + '-' + participantId + '.csv'
 
-        let destination = '/save';
-        if (!isLocalHost or forceOSFSave) {
-            destination = 'https://pipe.jspsych.org/api/data/';
-        }
-
-        fetch(destination, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: '*/*',
-            },
-            body: JSON.stringify({
-                experimentID: dataPipeExperimentId,
-                filename: prefix + '-' + participantId + '.csv',
-                data: results,
-            }),
-        }).then(data => {
-            console.log(data);
+        saveResults(fileName, results, dataPipeExperimentId, forceOSFSave).then(response => {
             jsPsych.finishTrial();
-        });
-    }
-};
+        })
+
+    };
+}
+
 timeline.push(resultsTrial);
+
 
 // Debrief trial
 let debriefTrial = {
@@ -203,10 +206,14 @@ let debriefTrial = {
             .ignore(['collect', 'stimulus', 'trial_type', 'trial_index', 'plugin_version'])
             .csv();
 
+
         console.log(data);
     }
 };
 timeline.push(debriefTrial);
 
+
 // Run the experiment
 jsPsych.run(timeline);
+
+
