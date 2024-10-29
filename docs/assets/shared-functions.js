@@ -31,6 +31,7 @@ async function saveResults(fileName, data, dataPipeExperimentId = '', forceOSFSa
     });
 
     return response;
+    console.log('In function', response);
 }
 
 /**
