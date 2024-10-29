@@ -1,13 +1,14 @@
-
 let blocksA = [
     ['nature', 'school'],
     ['anxiety', 'serenity']
 ];
 
+
 let blocksB = [
     ['nature or anxiety', 'school or serenity'],
     ['nature or serenity', 'school or anxiety']
 ];
+
 
 // There should be 10 words per category
 let words = {
@@ -18,31 +19,44 @@ let words = {
 };
 
 
+
+
 let count = 4;
 
 
 
-// The following code will process the above information into a `conditions` array you 
-// can use to structure your experiment. 
-// 
+
+
+
+// The following code will process the above information into a `conditions` array you
+// can use to structure your experiment.
+//
 // !! DO NOT MODIFY ANY OF THE FOLLOWING CODE !!
-// 
+//
 let conditions = generateConditions();
 console.log(conditions);
 
+
 function generateConditions() {
+
 
     let conditions = [];
 
+
     let blocks = shuffle(blocksA).concat(shuffle(blocksB));
+
 
     for (let categories of blocks) {
 
+
         let trials = [];
+
 
         for (let category of shuffle(categories)) {
 
+
             let wordChoices = [];
+
 
             if (category.includes('or')) {
                 let parts = category.split(' or ');
@@ -51,22 +65,28 @@ function generateConditions() {
                 wordChoices = shuffle(words[category]);
             }
 
+
             let wordsLeft = [...wordChoices];
 
+
             for (let i = 0; i < count / 2; i++) {
+
 
                 if (wordsLeft.length == 0) {
                     wordsLeft = shuffle([...wordChoices]);
                 }
 
+
                 let word = sample(wordsLeft);
                 remove(wordsLeft, (element) => element === word);
+
 
                 if (categories[0] == category) {
                     expectedResponse = 'f';
                 } else {
                     expectedResponse = 'j';
                 }
+
 
                 trials.push({
                     word: word,
@@ -77,14 +97,18 @@ function generateConditions() {
             }
         }
 
+
         conditions.push({
             categories: categories,
             trials: shuffle(trials)
         });
     }
 
+
     return conditions;
 }
+
+
 
 
 function shuffle(array) {
@@ -95,6 +119,7 @@ function shuffle(array) {
     return array;
 }
 
+
 // Remove an element from an array
 function remove(array, predicate) {
     const index = array.findIndex(predicate);
@@ -103,11 +128,13 @@ function remove(array, predicate) {
     }
 }
 
+
 // Select a random element from an array
 function sample(array) {
     const index = Math.floor(Math.random() * array.length);
     return array[index];
 }
+
 
 // Search an object for a string
 function searchObject(haystack, needle) {
