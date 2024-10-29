@@ -74,17 +74,12 @@ for (let block of conditions) {
     console.log("Block conditions:", blockConditions);  // Check blockConditions
 
     for (let condition of blockConditions) {
-        if (!condition || !condition.word) {
-            console.error("Condition or condition.word is undefined!", condition);
-            continue;  // Skip this iteration if condition or condition.word is missing
-        }
 
         let conditionTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
             <p class='category1'><b>${block.categories[0]}</b> (press 'F')</p>
             <p class='category2'><b>${block.categories[1]}</b> (press 'J')</p>
-            <p class='stimulusWord'>${condition.word}</p>
             `,
             choices: ['f', 'j'],
             data: {
