@@ -25,9 +25,6 @@ let count = 4;
 
 
 
-
-
-
 // The following code will process the above information into a `conditions` array you
 // can use to structure your experiment.
 //
