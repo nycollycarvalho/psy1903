@@ -78,7 +78,6 @@ for (let block of conditions) {
 
     // Use block.trials instead of block.trial
     let blockConditions = jsPsych.randomization.repeat(block.trials, 1);
-    console.log("Block conditions:", blockConditions);  // Check blockConditions
 
 
     for (let condition of blockConditions) {
@@ -188,7 +187,7 @@ let resultsTrial = {
             jsPsych.finishTrial();
         })
 
-    };
+    }
 }
 
 timeline.push(resultsTrial);
