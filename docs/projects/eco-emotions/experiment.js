@@ -2,8 +2,6 @@ let jsPsych = initJsPsych();
 let timeline = [];
 
 
-
-
 let welcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
@@ -14,8 +12,6 @@ let welcomeTrial = {
    <li>In Task 2, categorize a series of words.</li>
    <li>In Task 3, you will answers a brief set of questions.</li>
    </ul>
-
-
    <p>If you are doing this experiment in a mobile device, please, change to a computer.</p>
    <p>Press <span class='key'> SPACE </span> to begin.</p>
    `,
@@ -31,7 +27,7 @@ let videos = [
 ];
 
 
-let video = jsPsych.randomization.sampleWithoutReplacement(videos, 1)[0].embed;
+let video = jsPsych.randomization.sampleWithoutReplacement(videos, 1)[0];
 let primeCondition = video.embed;
 let whichPrime = video.name;
 
@@ -59,7 +55,7 @@ timeline.push(primingTrial);
 
 
 let IATInstructions = {
-    type: 'html-keyboard-response',
+    type: 'jsPsychHtmlKeyboardResponse',
     stimulus: `
    <h1 class='taskHeading'>Task 2 of 3</h1>
    <p>In this task you will, you will be shown a series of words and asked to sort them into categories.</p>
@@ -71,64 +67,65 @@ let IATInstructions = {
 
 timeline.push(IATInstructions);
 
+for (let block of conditions) {
 
-let blockInstructions = {
-    type: jsPsychHtmlKeyboardResponse,  // Use the correct type based on jsPsych version
-    stimulus: `<h2>Part ${conditions.indexOf(block) + 1} of 4</h2>
-   <p>In this part, the two categories will be: <b>${block.categories[0]}</b> and <b>${block.categories[1]}</b>.</p>
-   <p>If the word should be categorized into the <b>${block.categories[0]}</b> category, then press <span class='key'>F</span>.</p>
-   <p>If the word should be categorized into the <b>${block.categories[1]}</b> category, then press <span class='key'>J</span>.</p>
-   <p>Press <span class='key'>SPACE</span> to start.</p>`,
-    choices: [' '],
-};
-
-
-timeline.push(blockInstructions);
-
-
-let blockConditions = jsPsych.randomization.repeat(block.trial, 1);
-
-
-for (let condition of blockConditions) {
-    let conditionTrial = {
-        type: jsPsychHtmlKeyboardResponse,
+    let blockInstructions = {
+        type: jsPsychHtmlKeyboardResponse,  // Use the correct type based on jsPsych version
         stimulus: `
+    <h2>Part ${conditions.indexOf(block) + 1} of 4</h2>
+    <p>In this part, the two categories will be: <b>${block.categories[0]}</b> and <b>${block.categories[1]}</b>.</p>
+    <p>If the word should be categorized into the <b>${block.categories[0]}</b> category, then press <span class='key'>F</span>.</p>
+    <p>If the word should be categorized into the <b>${block.categories[1]}</b> category, then press <span class='key'>J</span>.</p>
+    <p>Press <span class='key'>SPACE</span> to start.</p>
+    `,
+        choices: [' '],
+    };
+
+    timeline.push(blockInstructions);
+
+
+    let blockConditions = jsPsych.randomization.repeat(block.trial, 1);
+
+
+    for (let condition of blockConditions) {
+        let conditionTrial = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: `
        <p class='category1'><b>${block.categories[0]}</b> (press 'F')</p>
        <p class='category2'><b>${block.categories[1]}</b> (press 'J')</p>
        <p class='stimulusWord'>${condition.word}</p>
        `,
-        choices: ['f', 'j'],
-        data: {
-            trialType: 'iat',
-            word: condition.word,
-            expectedCategory: condition.expectedCategory,
-            expectedCategoryAsDisplayed: condition.expectedCategoryAsDisplayed,
-            leftCategory: block.categories[0],
-            rightCategory: block.categories[1],
-            collect: true,
-        },
-        on_finish: function (data) {
-            if (data.response === data.expectedResponse) {
-                data.correct = true;
-            } else {
-                data.correct = false;
+            choices: ['f', 'j'],
+            data: {
+                trialType: 'iat',
+                word: condition.word,
+                expectedCategory: condition.expectedCategory,
+                expectedCategoryAsDisplayed: condition.expectedCategoryAsDisplayed,
+                leftCategory: block.categories[0],
+                rightCategory: block.categories[1],
+                collect: true,
+            },
+            on_finish: function (data) {
+                if (data.response === data.expectedResponse) {
+                    data.correct = true;
+                } else {
+                    data.correct = false;
+                }
             }
         }
+        timeline.push(conditionTrial);
+
+
+        let fixationTrial = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: `<p class='fixation'>+</p>`,
+            choices: ['NO KEYS'],
+            trial_duration: 250
+        };
+        timeline.push(fixationTrial);
     }
-    timeline.push(conditionTrial);
 
-
-
-
-    let fixationTrial = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<p class='fixation'>+</p>`,
-        choices: ['NO KEYS'],
-        trial_duration: 250
-    };
-    timeline.push(fixationTrial);
 }
-
 
 let likert_scale = [
     "Never",
