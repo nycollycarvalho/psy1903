@@ -46,6 +46,7 @@ let primingTrial = {
     data: {
         collect: true,
         trialType: 'prime',
+        whichPrime: whichPrime
     }
 };
 timeline.push(primingTrial);
@@ -63,20 +64,19 @@ let IATInstructions = {
 timeline.push(IATInstructions);
 
 let blockInstructions = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-    <h2>Part ${conditions.indexOf(block) + 1} of 4</h2>
+    type: jsPsychHtmlKeyboardResponse,  // Use the correct type based on jsPsych version
+    stimulus: `<h2>Part ${conditions.indexOf(block) + 1} of 4</h2>
     <p>In this part, the two categories will be: <b>${block.categories[0]}</b> and <b>${block.categories[1]}</b>.</p>
     <p>If the word should be categorized into the <b>${block.categories[0]}</b> category, then press <span class='key'>F</span>.</p>
     <p>If the word should be categorized into the <b>${block.categories[1]}</b> category, then press <span class='key'>J</span>.</p>
-    <p>Press <span class='key'>SPACE</span> to start.</p>
-`,
+    <p>Press <span class='key'>SPACE</span> to start.</p>`,
     choices: [' '],
 };
+
 timeline.push(blockInstructions);
 
-
 let blockConditions = jsPsych.randomization.repeat(block.trial, 1);
+
 for (let condition of blockConditions) {
     let conditionTrial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -104,6 +104,7 @@ for (let condition of blockConditions) {
         }
     }
     timeline.push(conditionTrial);
+
 
     let fixationTrial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -158,7 +159,7 @@ let resultsTrial = {
 
         let prefix = 'eco-emotions';
         let dataPipeExperimentId = 'qtpiSXvcWypL';
-        let forceOSFSave = true;
+        let forceOSFSave = false;
 
         // Filter and retrieve results as CSV data
         let results = jsPsych.data
