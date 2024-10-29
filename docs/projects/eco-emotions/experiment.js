@@ -67,24 +67,18 @@ timeline.push(IATInstructions);
 
 // Loop through conditions
 for (let block of conditions) {
+    console.log("Current block:", block);  // Check if block is defined
 
-    let blockInstructions = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
-        <h2>Part ${conditions.indexOf(block) + 1} of 4</h2>
-        <p>In this part, the two categories will be: <b>${block.categories[0]}</b> and <b>${block.categories[1]}</b>.</p>
-        <p>If the word should be categorized into the <b>${block.categories[0]}</b> category, press <span class='key'>F</span>.</p>
-        <p>If the word should be categorized into the <b>${block.categories[1]}</b> category, press <span class='key'>J</span>.</p>
-        <p>Press <span class='key'>SPACE</span> to start.</p>
-        `,
-        choices: [' '],
-    };
-    timeline.push(blockInstructions);
-
-    // Loop through block conditions
-    let blockConditions = jsPsych.randomization.repeat(block.trial, 1);
+    // Use block.trials instead of block.trial
+    let blockConditions = jsPsych.randomization.repeat(block.trials, 1);
+    console.log("Block conditions:", blockConditions);  // Check blockConditions
 
     for (let condition of blockConditions) {
+        if (!condition || !condition.word) {
+            console.error("Condition or condition.word is undefined!", condition);
+            continue;  // Skip this iteration if condition or condition.word is missing
+        }
+
         let conditionTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -179,7 +173,7 @@ let resultsTrial = {
         let isLocalHost = window.location.href.includes('localhost');
 
         let destination = '/save';
-        if (!isLocalHost || forceOSFSave) {
+        if (!isLocalHost or forceOSFSave) {
             destination = 'https://pipe.jspsych.org/api/data/';
         }
 
