@@ -23,8 +23,9 @@ const mirror_camera = {
     type: jsPsychMirrorCamera,
 }
 
+timeline.push(init_camera);
+timeline.push(mirror_camera);
 
-// Results trial
 let resultsTrial = {
     type: jsPsychHtmlKeyboardResponse,
     choices: ['NO KEYS'],
@@ -59,7 +60,8 @@ let resultsTrial = {
 
 timeline.push(resultsTrial);
 
-// Debrief trial 
+
+// Debrief trial
 let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1>Thank you!</h1><p>You can now close this tab.</p>`,
@@ -73,7 +75,10 @@ let debriefTrial = {
         console.log(data);
     }
 };
-
 timeline.push(debriefTrial);
 
+
+// Run the experiment
 jsPsych.run(timeline);
+
+
