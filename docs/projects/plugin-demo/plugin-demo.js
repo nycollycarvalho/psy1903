@@ -7,7 +7,7 @@ let welcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
   <h1 class='name'>Welcome to the mirror-camera Demo!</h1>
-  <p>This is just a pluguin demo.</p>
+  <p>This is just a plugin demo.</p>
   <p>Please, press <span class='key'> SPACE </span> to begin.</p>`,
     choices: [' '],
 }
@@ -35,7 +35,7 @@ let resultsTrial = {
       <p>We are saving the results of your inputs.</p>
       `,
     on_start: function () {
-        let prefix = 'pluguin-demo';
+        let prefix = 'plugin-demo';
         let dataPipeExperimentId = 'qtpiSXvcWypL';
         let forceOSFSave = false;
 
