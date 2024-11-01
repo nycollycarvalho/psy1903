@@ -1,4 +1,7 @@
-let jsPsych = initJsPsych();
+let jsPsych = initJsPsych({
+    show_progress_bar: true
+});
+
 let timeline = [];
 
 
@@ -198,7 +201,11 @@ let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1>Thank you!</h1><p>You can now close this tab.</p>`,
     choices: ['NO KEYS'],
+
     on_start: function () {
+
+        jsPsych.progressBar.progress = 1;
+
         let data = jsPsych.data
             .get()
             .filter({ collect: true })
@@ -208,6 +215,7 @@ let debriefTrial = {
 
         console.log(data);
     }
+
 };
 timeline.push(debriefTrial);
 

@@ -64,13 +64,21 @@ timeline.push(resultsTrial);
 // Debrief trial
 let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: `<h1>Thank you!</h1><p>You can now close this tab.</p>`,
-    choices: ['NO KEYS'],
+    stimulus: function (data) {
+
+        let linkToQualtricsSurvey = `https://harvard.az1.qualtrics.com/jfe/form/SV_ekV0pVH9xqAoOb4?experimentParticipantId=${participantId}`
+
+        return
+        `<h1>Thank you!</h1><p>You can now close this tab.</p>
+            <p>To complete your response, please follow <a href='${linkToQualtricsSuvey}'>this link</a> and complete the survey you see there.</p>`,
+            choices: ['NO KEYS'],
+
+    }
+
     on_start: function () {
         let data = jsPsych.data
             .get()
             .csv();
-
 
         console.log(data);
     }
