@@ -1,8 +1,10 @@
-let participantId = getCurrentTimestamp();
+
 
 
 let jsPsych = initJsPsych();
 let timeline = [];
+
+let participantId = getCurrentTimestamp();
 
 
 // Welcome message
