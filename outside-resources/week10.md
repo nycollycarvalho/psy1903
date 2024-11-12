@@ -1,4 +1,4 @@
-# Outside Resources Log - Week 8
+# Outside Resources Log - Week 10
 
 ## AI Prompts
 + None
