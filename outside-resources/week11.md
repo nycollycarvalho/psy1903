@@ -4,4 +4,4 @@
 + None
 
 ## Outside sites
-+ None
++ + [Filtering Methods In R](https://aaron0696.github.io/blog/filtering-methods-in-r/)

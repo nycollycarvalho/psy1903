@@ -2,14 +2,69 @@ setwd("~/Desktop/psy1903/stats")
 dir.create('data_cleaning')
 dir.create('data_cleaning/output')
 dir.create('data_cleaning/scripts')
-dir.create('data_cleaning/data')
+sdir.create('data_cleaning/data')
 
 setwd("~/Desktop/psy1903/stats/data_cleaning/scripts")
 
 if (!require("pacman")) {install.packages("pacman"); require("pacman")}  # First install and load in pacman to R
 p_load("tidyverse","rstudioapi","lme4","emmeans","psych","corrplot","jsonlite") 
 
-Participant5 <- read.csv("~/Desktop/psy1903/osfstorage-archive/eco-emotions-2024-11-05-22-39-51.csv")
+iat_data_Partcipant5 <- read.csv("~/Desktop/psy1903/osfstorage-archive/eco-emotions-2024-11-05-22-39-51.csv", header = TRUE, stringsAsFactors = FALSE, sep = ",", na.strings = "NA")
 
-str(Participant5) 
-summary(Participant5)
+str(iat_data_Partcipant5) 
+summary(iat_data_Partcipant5)
+
+iat_data2_Partcipant5 <- iat_data_Partcipant5 [iat_data_Partcipant5$expectedCategoryAsDisplayed == 'nature or serenity'|
+                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'school or anxiety'|
+                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'nature or anxiety'|
+                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'nature or serenity',
+                                               c("trial_index", "rt", "response", "word", "expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory", "correct")]
+
+##Using the str() and summary() functions, check the structure of your subsetted data files. 
+
+str(iat_data2_Partcipant5) 
+summary(iat_data2_Partcipant5)
+
+## Covert to integer or factor as necessary 
+
+iat_data2_Partcipant5$expectedCategory <- as.factor(iat_data2_Partcipant5$expectedCategory)
+iat_data2_Partcipant5$expectedCategoryAsDisplayed <- as.factor(iat_data2_Partcipant5$expectedCategoryAsDisplayed)
+iat_data2_Partcipant5$leftCategory <- as.factor(iat_data2_Partcipant5$leftCategory)
+iat_data2_Partcipant5$rightCategory <- as.factor(iat_data2_Partcipant5$rightCategory)
+
+column_names <- c("expectedCategory, expectedCategoryAsDisplayed, leftCategory, rightCategory")
+
+for (column_name in column_names) {
+  iat_data2_Partcipant5[,column_name] <- as.factor(iat_data2_Partcipant5[,column_name])
+}
+
+str(iat_data2_Partcipant5) 
+summary(iat_data2_Partcipant5)
+
+
+## Step 1: Specify your function with one argument, data
+## Step 2: Filter out trials with rt < 300 ms (subset full data frame into new data frame called tmp)
+## Step 3: Separate congruent and incongruent trials (subset tmp into two new data frames: congruent_trials and incongruent_trials) 
+## Step 4: Calculate mean for congruent and mean for incongruent trials (mean_congruent, mean_incongruent)
+## Step 5: Calculate standard deviation for all trials (pooled_sd) 
+## Step 6: Calculate D-score
+## Step 7: Return D-score
+
+calculate_IAT_dscore <- function(data) {
+  
+  tmp <- data[data$rt >= 300, ]
+
+  congruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "nature or serenity" | 
+                            tmp$expectedCategoryAsDisplayed == "school or anxiety", ]
+  incongruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "nature or anxiety" | 
+                              tmp$expectedCategoryAsDisplayed == "school or serenity", ]
+  
+  mean_congruent <- mean(congruent_trials$rt, na.rm = TRUE)
+  mean_incongruent <- mean(incongruent_trials$rt, na.rm = TRUE)
+  
+  pooled_sd <- sd(tmp$rt, na.rm = TRUE)
+  
+  d_score <- (mean_incongruent - mean_congruent) / pooled_sd
+  
+  return(d_score)
+}
