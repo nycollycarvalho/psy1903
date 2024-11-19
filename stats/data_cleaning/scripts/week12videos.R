@@ -13,5 +13,3 @@ iat_data_Partcipant5 <- read.csv("~/Desktop/psy1903/osfstorage-archive/eco-emoti
 
 str(iat_data_Partcipant5) 
 summary(iat_data_Partcipant5)
-
-s
