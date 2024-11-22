@@ -54,7 +54,7 @@ calculate_IAT_dscore <- function(data) {
   
   tmp <- data[data$rt > 300 & data$rt < 5000,]
   
-  ##make data only correct 
+  tmp <- tmp[tmp$correct == TRUE,]
   
   congruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "nature or serenity" | tmp$expectedCategoryAsDisplayed == "school or anxiety", ]
   incongruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "nature or anxiety" | tmp$expectedCategoryAsDisplayed == "school or serenity", ]
@@ -62,7 +62,6 @@ calculate_IAT_dscore <- function(data) {
   mean_congruent <- mean(congruent_trials$rt, na.rm = TRUE)
   mean_incongruent <- mean(incongruent_trials$rt, na.rm = TRUE)
 
-  
   pooled_sd <- sd(tmp$rt, na.rm = TRUE)
   
   d_score <- (mean_incongruent - mean_congruent) / pooled_sd
@@ -87,27 +86,35 @@ for (files in files_list) {
   
   tmp$rt <- round(as.numeric(tmp$rt), 0)
   
+  tmp$correct <- as.logical(tmp$correct)
+  
   tmp$expectedCategory <- as.factor(tmp$expectedCategory)
   tmp$expectedCategoryAsDisplayed <- as.factor(tmp$expectedCategoryAsDisplayed)
   tmp$leftCategory <- as.factor(tmp$leftCategory)
   tmp$rightCategory <- as.factor(tmp$rightCategory)
   
-  #column_names <- c("expectedCategory, expectedCategoryAsDisplayed, leftCategory, rightCategory")
+#str(tmp) use when checking if as.factor/as.logical is working 
   
-  participant_ID <- tools::file_path_sans_ext(basename(files))  
+  participant_ID <- tools::file_path_sans_ext(basename(files)) 
+  prime_label <- tmp[tmp$trialType == "prime", "whichPrime"]
   
   d_scores[i, "participant_ID"] <- participant_ID
-  d_scores[i, "whichprime"] <- 'placeholder'
+  d_scores[i, "whichprime"] <- prime_label
   d_scores[i, "d_scores"] <- calculate_IAT_dscore(tmp)
   d_scores[i, "questionnaire"] <- score_questionnaire(tmp)
+  
   
   rm(tmp)
   
   i <- i + 1
 }
 
-d_score <- round(as.numeric(d_score), 0)
-questionnaire <- round(as.numeric(questionnnaire), 0)
+d_scores$whichprime <- as.factor(d_scores$whichprime)
+d_scores$d_score <- as.numeric(d_scores$d_score)
+d_scores$questionnaire <- as.numeric(d_scores$questionnaire)
+d_scores$participant_ID <- as.character(d_scores$participant_ID)
+
+str(d_scores)
 
 write.csv(d_scores, "~/Desktop/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
 
@@ -123,7 +130,6 @@ score_questionnaire <- function(data){
   
   json_data <- data[data$trialType == "questionnaire", "response"]
   
-  
   ## Use fromJSON to convert from JSON to data frame
   
   questionnaire <- fromJSON(json_data)
@@ -138,13 +144,13 @@ score_questionnaire <- function(data){
   
   score <- rowMeans(questionnaire, na.rm = TRUE)
   
-  print(score)
-  
   return(score) 
 
 }
 
-write.csv (score, "~/Desktop/psy1903/stats/data_cleaning/data/questionnaire_scores.csv", row.names = FALSE)
+
+
+
 
 
 
