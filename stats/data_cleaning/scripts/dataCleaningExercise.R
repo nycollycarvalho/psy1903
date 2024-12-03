@@ -151,9 +151,130 @@ TukeyHSD(anova_iat)
 cor.test(d_scores$d_score, d_scores$questionnaire)
 
 
+png("~/Desktop/psy1903/stats/data_cleaning/output/Fig1_baseR_histogram.png", width = 600, height = 500)
+
+hist(d_scores$d_score,
+     main = "Distribution of D-Scores",
+     xlab = "D-Scores",
+     ylab = "Frequency",
+     col = "darkseagreen")
+
+dev.off()  
 
 
+png("~/Desktop/psy1903/stats/data_cleaning/output/Fig2_ggplot_histogram.png", width = 600, height = 500)
 
+  ggplot(d_scores, aes(x = d_score)) +
+    geom_histogram(
+      binwidth = 0.1, 
+      color = "black", 
+      fill = "darkseagreen") +
+    labs(
+      title = "Distribution of D-Scores",  
+      x = "D-Scores",                      
+      y = "Frequency"                     
+    ) +
+    theme_minimal()
 
+dev.off()  
+
+png("~/Desktop/psy1903/stats/data_cleaning/output/Fig3_ggplot_histogram_by_prime.png", width = 600, height = 500)
+
+  ggplot(d_scores, aes(x = d_score)) +
+    geom_histogram(
+      binwidth = 0.1, 
+      color = "black", 
+      fill = "skyblue") +
+    labs(
+      title = "Distribution of D-Scores",  
+      x = "D-Scores",                      
+      y = "Frequency"                     
+    ) +
+    theme_classic() +
+    facet_wrap(~whichprime)
+
+dev.off()  
+
+png("~/Desktop/psy1903/stats/data_cleaning/output/Fig4_ggplot_boxplot.png", width = 600, height = 500)
+
+ggplot(d_scores, aes(x = whichprime, y = d_score, fill = whichprime)) +
+  geom_boxplot() +  
+  labs(
+    title = "Effect of Prime on D-Scores", 
+    x = "Prime Condition",                 
+    y = "D-Scores"                         
+  ) +
+  theme_classic() +                       
+  theme(legend.position = "none") +        
+  scale_x_discrete(labels = c(          
+    "neutral" = "Neutral",
+    "school-anxiety" = "School Anxiety",
+    "climate-anxiety" = "Climate Anxiety"
+  )) 
+
+dev.off()  
+
+png("~/Desktop/psy1903/stats/data_cleaning/output/Fig5_ggplot_scatter.png", width = 600, height = 500)
+
+ggplot(d_scores, aes(x = questionnaire, y = d_score)) +
+  geom_point() +  
+  geom_smooth(method = "lm") + 
+  labs(
+    title = "Correlation Between Questionnaire and D-Scores",  
+    x = "Questionnaire",                                    
+    y = "D-Scores"                                          
+  ) +
+  theme_classic() 
+
+dev.off() 
+
+theme_nature <- function() {
+  theme(
+    plot.title = element_text(
+      face = "bold", size = 16, color = "forestgreen", family = "serif"
+    ),
+    axis.title = element_text(
+      size = 14, color = "darkgreen", family = "serif"
+    ),
+    axis.text = element_text(
+      size = 12, color = "forestgreen", family = "serif"
+    ),
+    panel.background = element_rect(fill = "honeydew"),
+    panel.grid.major = element_line(color = "palegreen")
+  )  
+}
+
+png("~/Desktop/psy1903/stats/data_cleaning/output/Fig6_ggplot_scatter.png", width = 600, height = 500)
+
+ggplot(d_scores, aes(x = questionnaire, y = d_score)) +
+  geom_point() +  
+  geom_smooth(method = "lm") + 
+  labs(
+    title = "Correlation Between Questionnaire and D-Scores",  
+    x = "Questionnaire",                                    
+    y = "D-Scores"                                          
+  ) +
+  theme_nature() 
+
+dev.off() 
+
+png("~/Desktop/psy1903/stats/data_cleaning/output/Fig7_ggplot_boxplot.png", width = 600, height = 500)
+
+ggplot(d_scores, aes(x = whichprime, y = d_score, fill = whichprime)) +
+  geom_boxplot() +  
+  labs(
+    title = "Effect of Prime on D-Scores", 
+    x = "Prime Condition",                 
+    y = "D-Scores"                         
+  ) +
+  theme_nature() +                       
+  theme(legend.position = "none") +        
+  scale_x_discrete(labels = c(          
+    "neutral" = "Neutral",
+    "school-anxiety" = "School Anxiety",
+    "climate-anxiety" = "Climate Anxiety"
+  )) 
+
+dev.off()  
 
 
