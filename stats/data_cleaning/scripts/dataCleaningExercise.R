@@ -10,34 +10,34 @@ setwd("~/Desktop/psy1903/stats/data_cleaning/scripts/")
 if (!require("pacman")) {install.packages("pacman"); require("pacman")}
 p_load("tidyverse","rstudioapi","lme4","emmeans","psych","corrplot", "jsonlite")
 
-iat_data_Partcipant5 <- read.csv("~/Desktop/psy1903/osfstorage-archive/eco-emotions-2024-11-05-22-39-51.csv", header = TRUE, na.strings = "NA")
+#iat_data_Partcipant5 <- read.csv("~/Desktop/psy1903/osfstorage-archive/eco-emotions-2024-11-05-22-39-51.csv", header = TRUE, na.strings = "NA")
 
 #str(iat_data_Partcipant5)
 #summary(iat_data_Partcipant5)
 
-iat_data2_Partcipant5 <- iat_data_Partcipant5 [iat_data_Partcipant5$expectedCategoryAsDisplayed == 'nature or serenity'|
-                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'school or anxiety'|
-                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'nature or anxiety'|
-                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'school or serenity',
-                                               c("trial_index", "rt", "response", "word", "expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory", "correct")]
+#iat_data2_Partcipant5 <- iat_data_Partcipant5 [iat_data_Partcipant5$expectedCategoryAsDisplayed == 'nature or serenity'|
+#                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'school or anxiety'|
+#                                                iat_data_Partcipant5$expectedCategoryAsDisplayed == 'nature or anxiety'|
+#                                                 iat_data_Partcipant5$expectedCategoryAsDisplayed == 'school or serenity',
+#                                               c("trial_index", "rt", "response", "word", "expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory", "correct")]
 
 
 #str(iat_data2_Partcipant5)
 #summary(iat_data2_Partcipant5)
 
-iat_data2_Partcipant5$expectedCategory <- as.factor(iat_data2_Partcipant5$expectedCategory)
-iat_data2_Partcipant5$expectedCategoryAsDisplayed <- as.factor(iat_data2_Partcipant5$expectedCategoryAsDisplayed)
-iat_data2_Partcipant5$leftCategory <- as.factor(iat_data2_Partcipant5$leftCategory)
-iat_data2_Partcipant5$rightCategory <- as.factor(iat_data2_Partcipant5$rightCategory)
+#iat_data2_Partcipant5$expectedCategory <- as.factor(iat_data2_Partcipant5$expectedCategory)
+#iat_data2_Partcipant5$expectedCategoryAsDisplayed <- as.factor(iat_data2_Partcipant5$expectedCategoryAsDisplayed)
+#iat_data2_Partcipant5$leftCategory <- as.factor(iat_data2_Partcipant5$leftCategory)
+#iat_data2_Partcipant5$rightCategory <- as.factor(iat_data2_Partcipant5$rightCategory)
 
-column_names <- c("expectedCategory, expectedCategoryAsDisplayed, leftCategory, rightCategory")
+#column_names <- c("expectedCategory, expectedCategoryAsDisplayed, leftCategory, rightCategory")
 
 
-for (column_name in column_names) {
-  iat_data2_Partcipant5[,column_name] <- as.factor(iat_data2_Partcipant5[,column_name])
-}
+#for (column_name in column_names) {
+#  iat_data2_Partcipant5[,column_name] <- as.factor(iat_data2_Partcipant5[,column_name])
+#}
 
-iat_data2_Partcipant5$rt <- round(as.numeric(iat_data2_Partcipant5$rt), 0)
+#iat_data2_Partcipant5$rt <- round(as.numeric(iat_data2_Partcipant5$rt), 0)
 
 #str(iat_data2_Partcipant5) 
 #summary(iat_data2_Partcipant5)
@@ -67,6 +67,30 @@ calculate_IAT_dscore <- function(data) {
   d_score <- (mean_incongruent - mean_congruent) / pooled_sd
   
   return(d_score)
+}
+
+score_questionnaire <- function(data){
+  
+  ## Extract questionnaire data cell
+  
+  json_data <- data[data$trialType == "questionnaire", "response"]
+  
+  ## Use fromJSON to convert from JSON to data frame
+  
+  questionnaire <- fromJSON(json_data)
+  
+  questionnaire <- as.data.frame(questionnaire)
+  
+  ## Convert to numeric
+  
+  questionnaire <- as.data.frame(lapply(questionnaire, as.numeric))
+  
+  ## Calculate & return questionnaire score (mean)
+  
+  score <- rowMeans(questionnaire, na.rm = TRUE)
+  
+  return(score) 
+  
 }
 
 
@@ -118,37 +142,13 @@ str(d_scores)
 
 write.csv(d_scores, "~/Desktop/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
 
-directory_path <- "~/Desktop/psy1903/osfstorage-archive"
-
-files_list <- list.files(path = directory_path, pattern = "\\.csv$", full.names = TRUE)
-
-## Initiate function called score_questionnaire that accepts a single argument called `data`. Within this function...
-
-score_questionnaire <- function(data){
- 
-   ## Extract questionnaire data cell
-  
-  json_data <- data[data$trialType == "questionnaire", "response"]
-  
-  ## Use fromJSON to convert from JSON to data frame
-  
-  questionnaire <- fromJSON(json_data)
-
-  questionnaire <- as.data.frame(questionnaire)
-  
-  ## Convert to numeric
-  
-  questionnaire <- as.data.frame(lapply(questionnaire, as.numeric))
-  
-  ## Calculate & return questionnaire score (mean)
-  
-  score <- rowMeans(questionnaire, na.rm = TRUE)
-  
-  return(score) 
-
-}
+anova_iat <- aov(d_score ~ whichprime, data = d_scores) 
+summary(anova_iat)
 
 
+TukeyHSD(anova_iat)
+
+cor.test(d_scores$d_score, d_scores$questionnaire)
 
 
 
